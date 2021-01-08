@@ -27,9 +27,7 @@ module Enumerable
   def my_select
     if block_given?
       arr = []
-      for element in self do
-        arr.push(element) if yield(element)
-      end
+      (0...self.length).each {|element| arr.push(element) if yield(element)}
       arr
     else
       to_enum(:my_select)
