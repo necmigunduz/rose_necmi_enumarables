@@ -2,6 +2,7 @@
 # rubocop:disable Metrics/PerceivedComplexity
 # rubocop:disable Metrics/MethodLength
 # rubocop:disable Metrics/ModuleLength
+
 module Enumerable
   # Task-1 my_each exercise
   def my_each
@@ -151,6 +152,7 @@ def multiply_els(arr)
 end
 # Test for multiply_els
 # p multiply_els([2, 4, 5])
+
 # rubocop:enable Metrics/CyclomaticComplexity
 # rubocop:enable Metrics/PerceivedComplexity
 # rubocop:enable Metrics/MethodLength
