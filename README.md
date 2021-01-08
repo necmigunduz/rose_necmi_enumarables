@@ -33,7 +33,7 @@ A machine with a working and up to date text editor and the latest version of Ru
 - Twitter: [@necm_gun](https://twitter.com/necm_gun)
 - LinkedIn: [LinkedIn](https://www.linkedin.com/in/necmigunduz/)
 
-👤 **Author1**
+👤 **Author2**
 
 - GitHub: [@ZawadiSumba66](https://github.com/ZawadiSumba66)
 - Twitter: [@zawadirose1](https://twitter.com/zawadirose1)
