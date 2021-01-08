@@ -151,3 +151,7 @@ def multiply_els(arr)
 end
 # Test for multiply_els
 # p multiply_els([2, 4, 5])
+# rubocop:enable Metrics/CyclomaticComplexity
+# rubocop:enable Metrics/PerceivedComplexity
+# rubocop:enable Metrics/MethodLength
+# rubocop:enable Metrics/ModuleLength
