@@ -1,4 +1,5 @@
 module Enumerable
+  # rubocop:disable Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity
   # Task-1 my_each exercise
   def my_each
     if block_given?
