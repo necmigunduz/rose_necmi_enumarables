@@ -4,7 +4,7 @@
 
 > We created different methods that are designed to work like enumerable methods. The mission of this project was to get to understand the logic behind enumerable methods
 
-This is the first project of Ruby creatd by using Ruby, Linters, and VS Code.
+This is the second project of Ruby created using Ruby, Linters, and VS Code.
 ## Built With
 
 - Ruby
