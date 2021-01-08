@@ -7,6 +7,7 @@ module Enumerable
       to_enumerator(:my_each)
     end
   end
+
   # Test for my_each
   # [1,2,3].my_each {|e| p "#{e}"}
   # Task-2 my_each_with_index
@@ -17,18 +18,20 @@ module Enumerable
       to_enumerator(:my_each_with_index)
     end
   end
+
   # Test for my_each
   # [1,2,3].my_each_with_index {|e,i| p "#{e}:#{i}"}
   # Task-3 my_select
   def my_select
     if block_given?
       arr = []
-      (0...self.length).each {|element| arr.push(element) if yield(element)}
+      (0...length).each { |element| arr.push(element) if yield(element) }
       arr
     else
       to_enum(:my_select)
     end
   end
+
   # Test for my_select
   # p([1, 2, 3, 4, 5, 6, 7, 8].my_select { |x| x.even? })
   # Task 4 my_all
@@ -42,6 +45,7 @@ module Enumerable
       to_enumerator(:my_all)
     end
   end
+
   # Test for my_all
   # [1, 2, 3, 4, 5, 6, 7, 8].my_all {|x| x.even?}
   # Task-5 my_any
@@ -55,6 +59,7 @@ module Enumerable
       to_enumerator(:my_any)
     end
   end
+
   # Test for my_any
   # [1, 2, 3, 4, 5, 6, 7, 8].my_any { |x| x.even? }
   # Task-6 my_none
@@ -68,6 +73,7 @@ module Enumerable
       to_enumerator(:my_any)
     end
   end
+
   # Test for my_none
   # [2,4].my_none { |x| x.even? }
   # Task-6 my_count
@@ -80,6 +86,7 @@ module Enumerable
       to_enumerator(:count)
     end
   end
+
   # Test for my_count
   # [1, 2, 3, 4, 5, 6, 7, 8, 0, nil].my_count {|x| x.even?}
   # Task-7 my_map
@@ -92,6 +99,7 @@ module Enumerable
       to_enumerator(:my_map)
     end
   end
+
   # Test for my_map
   # [1, 2, 3, 4, 5, 6, 7, 8].my_map {"cat"}
   # Task-8 my_inject
@@ -112,6 +120,7 @@ module Enumerable
       starter
     end
   end
+
   # Test for my_inject
   # p [2, 4, 5].my_inject(1, :*)
   # p [2, 4, 5].my_inject(:*)
