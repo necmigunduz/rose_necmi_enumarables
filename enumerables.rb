@@ -122,10 +122,10 @@ module Enumerable
   end
 
   # Test for my_inject
-  p [2, 4, 5].my_inject(1, :*)
-  p [2, 4, 5].my_inject(:*)
-  p [2, 4, 5].my_inject(2) { |memo, n| memo * n }
-  p [2, 4, 5].my_inject { |memo, n| memo + n }
+  # p [2, 4, 5].my_inject(1, :*)
+  # p [2, 4, 5].my_inject(:*)
+  # p [2, 4, 5].my_inject(2) { |memo, n| memo * n }
+  # p [2, 4, 5].my_inject { |memo, n| memo + n }
   # Task-10 my_map_proc
   def my_map_proc
     arr = []
