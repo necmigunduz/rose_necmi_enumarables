@@ -2,7 +2,6 @@
 # rubocop:disable Metrics/PerceivedComplexity
 
 module Enumerable
-  # Task-1 my_each exercise
   def my_each
     if block_given?
       length.times { |e| yield(self[e]) }
@@ -11,9 +10,6 @@ module Enumerable
     end
   end
 
-  # Test for my_each
-  # [1,2,3].my_each {|e| p "#{e}"}
-  # Task-2 my_each_with_index
   def my_each_with_index
     if block_given?
       (0...length).each { |index| yield(self[index], index) }
@@ -22,9 +18,6 @@ module Enumerable
     end
   end
 
-  # Test for my_each
-  # [1,2,3].my_each_with_index {|e,i| p "#{e}:#{i}"}
-  # Task-3 my_select
   def my_select
     if block_given?
       arr = []
@@ -35,10 +28,7 @@ module Enumerable
     end
   end
 
-  # Test for my_select
-  # p([1, 2, 3, 4, 5, 6, 7, 8].my_select { |x| x.even? })
-  # Task 4 my_all
-  def my_all
+  def my_all?
     if block_given?
       result = []
       (0...length).each { |element| result.push(yield(self[element])) }
@@ -49,10 +39,7 @@ module Enumerable
     end
   end
 
-  # Test for my_all
-  # [1, 2, 3, 4, 5, 6, 7, 8].my_all {|x| x.even?}
-  # Task-5 my_any
-  def my_any
+  def my_any?
     if block_given?
       result = []
       (0...length).each { |element| result.push(yield(self[element])) }
@@ -63,10 +50,7 @@ module Enumerable
     end
   end
 
-  # Test for my_any
-  # [1, 2, 3, 4, 5, 6, 7, 8].my_any { |x| x.even? }
-  # Task-6 my_none
-  def my_none
+  def my_none?
     if block_given?
       result = []
       (0...length).each { |element| result.push(yield(self[element])) }
@@ -77,9 +61,6 @@ module Enumerable
     end
   end
 
-  # Test for my_none
-  # [2,4].my_none { |x| x.even? }
-  # Task-6 my_count
   def my_count
     if block_given?
       count = 0
@@ -90,9 +71,6 @@ module Enumerable
     end
   end
 
-  # Test for my_count
-  # [1, 2, 3, 4, 5, 6, 7, 8, 0, nil].my_count {|x| x.even?}
-  # Task-7 my_map
   def my_map
     if block_given?
       animal = []
@@ -103,9 +81,6 @@ module Enumerable
     end
   end
 
-  # Test for my_map
-  # [1, 2, 3, 4, 5, 6, 7, 8].my_map {"cat"}
-  # Task-8 my_inject
   def my_inject(beg = nil, sym = nil)
     if !beg.nil? && !sym.nil?
       my_each { |num| beg = beg.method(sym).call(num) }
@@ -123,12 +98,6 @@ module Enumerable
     end
   end
 
-  # Test for my_inject
-  # p [2, 4, 5].my_inject(1, :*)
-  # p [2, 4, 5].my_inject(:*)
-  # p [2, 4, 5].my_inject(2) { |memo, n| memo * n }
-  # p [2, 4, 5].my_inject { |memo, n| memo + n }
-  # Task-10 my_map_proc
   def my_map_proc
     arr = []
     if block_given?
@@ -140,16 +109,11 @@ module Enumerable
     end
     arr
   end
-  # Test for my_map_proc
-  # my_pr = proc { |x| x + 20 }
-  # p [1, 2, 3, 4, 5].my_map_proc(&my_pr)
 end
-# Task-9 multiply_els
+
 def multiply_els(arr)
   arr.my_inject { |mlt, i| mlt + i }
 end
-# Test for multiply_els
-# p multiply_els([2, 4, 5])
 
 # rubocop:enable Metrics/CyclomaticComplexity
 # rubocop:enable Metrics/PerceivedComplexity
