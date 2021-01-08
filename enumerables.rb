@@ -1,4 +1,7 @@
-  # rubocop:disable Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity
+# rubocop:disable Metrics/CyclomaticComplexity
+# rubocop:disable Metrics/PerceivedComplexity
+# rubocop:disable Metrics/MethodLength
+# rubocop:disable Metrics/ModuleLength
 module Enumerable
   # Task-1 my_each exercise
   def my_each
