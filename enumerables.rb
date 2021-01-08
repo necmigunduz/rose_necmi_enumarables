@@ -105,8 +105,7 @@ module Enumerable
   # Task-8 my_inject
   def my_inject(starter = nil, sym = nil)
     if !starter.nil? && !sym.nil?
-      my_each { |num| starter = starter.method(sym).call(num) } # = starter += self[num]
-      starter
+      my_each { |num| starter = starter.method(sym).call(num) }
     elsif !starter.nil? && starter.is_a?(Symbol) && !sym.nil?
       memo = self
       my_each { |num| memo = memo.method(starter).call(num) }
