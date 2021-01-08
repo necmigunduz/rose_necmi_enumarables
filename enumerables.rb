@@ -103,20 +103,20 @@ module Enumerable
   # Test for my_map
   # [1, 2, 3, 4, 5, 6, 7, 8].my_map {"cat"}
   # Task-8 my_inject
-  def my_inject(starter = nil, sym = nil)
-    if !starter.nil? && !sym.nil?
-      my_each { |num| starter = starter.method(sym).call(num) }
-    elsif !starter.nil? && starter.is_a?(Symbol) && !sym.nil?
+  def my_inject(st = nil, sym = nil)
+    if !st.nil? && !sym.nil?
+      my_each { |num| st = st.method(sym).call(num) }
+    elsif !st.nil? && st.is_a?(Symbol) && !sym.nil?
       memo = self
-      my_each { |num| memo = memo.method(starter).call(num) }
+      my_each { |num| memo = memo.method(st).call(num) }
       memo
-    elsif !starter.nil? && starter.is_a?(Integer) && sym.nil?
-      my_each { |num| starter = yield(starter, num) }
-      starter
-    elsif starter.nil? && sym.nil?
-      starter, *remaining_ele = self
-      remaining_ele.my_each { |num| starter = yield(starter, num) }
-      starter
+    elsif !st.nil? && st.is_a?(Integer) && sym.nil?
+      my_each { |num| st = yield(st, num) }
+      st
+    elsif st.nil? && sym.nil?
+      st, *remaining_ele = self
+      remaining_ele.my_each { |num| st = yield(st, num) }
+      st
     end
   end
 
