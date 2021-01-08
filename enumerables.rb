@@ -7,10 +7,8 @@ module Enumerable
       to_enumerator(:my_each)
     end
   end
-
   # Test for my_each
   # [1,2,3].my_each {|e| p "#{e}"}
-
   # Task-2 my_each_with_index
   def my_each_with_index
     if block_given?
@@ -19,10 +17,8 @@ module Enumerable
       to_enumerator(:my_each_with_index)
     end
   end
-
   # Test for my_each
   # [1,2,3].my_each_with_index {|e,i| p "#{e}:#{i}"}
-
   # Task-3 my_select
   def my_select
     if block_given?
@@ -33,10 +29,8 @@ module Enumerable
       to_enum(:my_select)
     end
   end
-
   # Test for my_select
   # p([1, 2, 3, 4, 5, 6, 7, 8].my_select { |x| x.even? })
-
   # Task 4 my_all
   def my_all
     if block_given?
@@ -48,10 +42,8 @@ module Enumerable
       to_enumerator(:my_all)
     end
   end
-
   # Test for my_all
   # [1, 2, 3, 4, 5, 6, 7, 8].my_all {|x| x.even?}
-
   # Task-5 my_any
   def my_any
     if block_given?
@@ -63,10 +55,8 @@ module Enumerable
       to_enumerator(:my_any)
     end
   end
-
   # Test for my_any
   # [1, 2, 3, 4, 5, 6, 7, 8].my_any { |x| x.even? }
-
   # Task-6 my_none
   def my_none
     if block_given?
@@ -78,10 +68,8 @@ module Enumerable
       to_enumerator(:my_any)
     end
   end
-
   # Test for my_none
   # [2,4].my_none { |x| x.even? }
-
   # Task-6 my_count
   def my_count
     if block_given?
@@ -92,10 +80,8 @@ module Enumerable
       to_enumerator(:count)
     end
   end
-
   # Test for my_count
   # [1, 2, 3, 4, 5, 6, 7, 8, 0, nil].my_count {|x| x.even?}
-
   # Task-7 my_map
   def my_map
     if block_given?
@@ -108,7 +94,6 @@ module Enumerable
   end
   # Test for my_map
   # [1, 2, 3, 4, 5, 6, 7, 8].my_map {"cat"}
-
   # Task-8 my_inject
   def my_inject(starter = nil, sym = nil)
     if !starter.nil? && !sym.nil?
@@ -132,7 +117,6 @@ module Enumerable
   # p [2, 4, 5].my_inject(:*)
   # p [2, 4, 5].my_inject(2) { |memo, n| memo * n }
   # p [2, 4, 5].my_inject { |memo, n| memo + n }
-
   # Task-10 my_map_proc
   def my_map_proc
     arr = []
@@ -145,16 +129,13 @@ module Enumerable
     end
     arr
   end
-
   # Test for my_map_proc
-  my_pr = proc { |x| x + 20 }
-  p [1, 2, 3, 4, 5].my_map_proc(&my_pr)
+  # my_pr = proc { |x| x + 20 }
+  # p [1, 2, 3, 4, 5].my_map_proc(&my_pr)
 end
-
 # Task-9 multiply_els
 def multiply_els(arr)
   arr.my_inject { |mlt, i| mlt + i }
 end
-
 # Test for multiply_els
 # p multiply_els([2, 4, 5])
