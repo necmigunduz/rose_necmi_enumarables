@@ -29,15 +29,15 @@ module Enumerable
       to_enum(:my_select)
     end
   end
-
-  def my_all?(arg = nil)
-    unless arg.nil?
-      if arg.is_a? Class
-        my_each.each { |element| return false unless element.is_a?(arg) }
-      elsif arg.is_a? Regexp
-        my_each.each { |element| return false unless element =~ arg }
+  
+  def my_all?(argm = nil)
+    unless argm.nil?
+      if argm.is_a? Class
+        my_each.each { |element| return false unless element.is_a?(argm) }
+      elsif argm.is_a? Regexp
+        my_each.each { |element| return false unless element =~ argm }
       else
-        my_each.each { |element| return false unless element.is_a(arg) }
+        my_each.each { |element| return false unless element.is_a(Symbol) }
       end
       return true
     end
@@ -57,63 +57,63 @@ module Enumerable
     desired
   end
 
-  def my_any?
+
+  def my_any?(argm = nil, &proc)
+    return true if !block_given? && argm.nil? && my_each { |elem| return true if elem == true } && empty? == false
+    return false unless block_given? || !argm.nil?
+
     if block_given?
-      result = []
-      my_each { |element| result.push(yield(self[element])) }
-      p true if result.include?(true)
-      p false if result.include?(false)
+      my_each { |element| return true if proc.call(element) }
+    elsif argm.class == Regexp
+      my_each { |element| return true unless argm.match(element).nil? }
+    elsif argm.class <= Numeric || argm.class <= String
+      my_each { |element| return true if element == argm }
     else
-      to_enum(:my_any)
+      my_each { |element| return true if element.class != argm}
     end
+    false
   end
 
-  def my_none?
-    if block_given?
-      result = []
-      my_each { |element| result.push(yield(self[element])) }
-      p false if result.include?(true)
-      p true if result.include?(false)
-    else
-      to_enum(:my_any)
-    end
+  def my_none?(argm= nil, &proc)
+    !my_any?(argm, &proc)
   end
 
-  def my_count
-    if block_given?
-      count = 0
-      my_each { |element| count += 1 if yield(element) }
-      p count
-    else
-      to_enum(:count)
+  def my_count(argm = nil, &proc)
+    count = 0
+    my_each do |element|
+      if block_given?
+        count += 1 if proc.call(element)
+      elsif !argm.nil?
+        count += 1 if element == argm
+      else
+        count = length
+      end
     end
+    count
   end
 
-  def my_map
-    if block_given?
-      animal = []
-      length.times { |_element| animal.push(yield) }
-      p animal
-    else
-      to_enum(:my_map)
-    end
+  def my_map(proc = nil)
+    return to_enum(:my_map) unless block_given?
+
+    result = []
+    my_each { |element| result << proc.call(element) } if block_given? && proc
+    my_each { |element| result << yield(element) } if proc.nil?
+    result
   end
 
-  def my_inject(beg = nil, sym = nil)
-    if !beg.nil? && !sym.nil?
-      my_each { |num| beg = beg.method(sym).call(num) }
-    elsif !beg.nil? && beg.is_a?(Symbol) && !sym.nil?
-      memo = self
-      my_each { |num| memo = memo.method(beg).call(num) }
-      memo
-    elsif !beg.nil? && beg.is_a?(Integer) && sym.nil?
-      my_each { |num| beg = yield(beg, num) }
-      beg
-    elsif beg.nil? && sym.nil?
-      beg, *remain_e = self
-      remain_e.my_each { |num| beg = yield(beg, num) }
-      beg
+  def my_inject(memory = nil, symbol = nil, &proc)
+    memory = memory.to_sym if memory.is_a?(String) && !symbol && !proc
+
+    if memory.is_a?(Symbol) && !symbol
+      proc = memory.to_proc
+      memory = nil
     end
+
+    symbol = sym.to_sym if symbol.is_a?(String)
+    proc = symbol.to_proc if symbol.is_a?(Symbol)
+
+    my_each { |element| memory = memory.nil? ? element : proc.yield(memory, element) }
+    memory
   end
 
   def my_map_proc
@@ -130,7 +130,7 @@ module Enumerable
 end
 
 def multiply_els(arr)
-  arr.my_inject { |mlt, i| mlt + i }
+  arr.my_inject { |multiply, element| multiply * element }
 end
 
 # rubocop:enable Metrics/CyclomaticComplexity
