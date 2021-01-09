@@ -29,7 +29,7 @@ module Enumerable
       to_enum(:my_select)
     end
   end
-  
+
   def my_all?(argm = nil)
     unless argm.nil?
       if argm.is_a? Class
@@ -57,32 +57,31 @@ module Enumerable
     desired
   end
 
-
-  def my_any?(argm = nil, &proc)
+  def my_any?(argm = nil)
     return true if !block_given? && argm.nil? && my_each { |elem| return true if elem == true } && empty? == false
     return false unless block_given? || !argm.nil?
 
     if block_given?
-      my_each { |element| return true if proc.call(element) }
+      my_each { |element| return true if yield(element) }
     elsif argm.class == Regexp
       my_each { |element| return true unless argm.match(element).nil? }
     elsif argm.class <= Numeric || argm.class <= String
       my_each { |element| return true if element == argm }
     else
-      my_each { |element| return true if element.class != argm}
+      my_each { |element| return true if element.class != argm }
     end
     false
   end
 
-  def my_none?(argm= nil, &proc)
+  def my_none?(argm = nil, &proc)
     !my_any?(argm, &proc)
   end
 
-  def my_count(argm = nil, &proc)
+  def my_count(argm = nil)
     count = 0
     my_each do |element|
       if block_given?
-        count += 1 if proc.call(element)
+        count += 1 if yield(element)
       elsif !argm.nil?
         count += 1 if element == argm
       else
