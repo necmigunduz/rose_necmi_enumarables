@@ -9,7 +9,7 @@ module Enumerable
     arr.length.times { |e| yield(arr[e]) }
     self
   end
- 
+
   def my_each_with_index
     return to_enum unless block_given?
 
@@ -20,9 +20,9 @@ module Enumerable
 
   def my_select
     if block_given?
-      arr = Array.new
-      
-      (0...self.length).each { |element| arr.push(element) if yield(element) }
+      arr = []
+
+      my_each { |element| arr.push(element) if yield(element) }
       arr
     else
       to_enum(:my_select)
@@ -32,15 +32,15 @@ module Enumerable
   def my_all?(arg = nil)
     unless arg.nil?
       if arg.is_a? Class
-        my_each.each {|element| return false unless element.is_a?(arg)}
+        my_each.each { |element| return false unless element.is_a?(arg) }
       elsif arg.is_a? Regexp
-        my_each.each {|element| return false unless element =~ arg}
+        my_each.each { |element| return false unless element =~ arg }
       else
-        my_each.each {|element| return false unless element.is_a(arg)}
+        my_each.each { |element| return false unless element.is_a(arg) }
       end
       return true
     end
-    
+
     unless block_given?
       my_each { |element| return false unless element }
       return true
@@ -49,11 +49,11 @@ module Enumerable
     desired = false
 
     my_each do |element|
-      desired = yield(element) 
-      break if !desired
+      desired = yield(element)
+      break unless desired
     end
 
-    desired 
+    desired
   end
 
   def my_any?
