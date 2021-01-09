@@ -3,71 +3,88 @@
 
 module Enumerable
   def my_each
-    if block_given?
-      length.times { |e| yield(self[e]) }
-    else
-      to_enumerator(:my_each)
-    end
-  end
+    return to_enum unless block_given?
 
+    arr = to_a
+    arr.length.times { |e| yield(arr[e]) }
+    self
+  end
+ 
   def my_each_with_index
-    if block_given?
-      (0...length).each { |index| yield(self[index], index) }
-    else
-      to_enumerator(:my_each_with_index)
-    end
+    return to_enum unless block_given?
+
+    arr = to_a
+    (0...arr.length).each { |index| yield(arr[index], index) }
+    self
   end
 
   def my_select
     if block_given?
-      arr = []
-      (0...length).each { |element| arr.push(element) if yield(element) }
+      arr = Array.new
+      
+      (0...self.length).each { |element| arr.push(element) if yield(element) }
       arr
     else
       to_enum(:my_select)
     end
   end
 
-  def my_all?
-    if block_given?
-      result = []
-      (0...length).each { |element| result.push(yield(self[element])) }
-      p false if result.include?(false)
-      p true if result.include?(true)
-    else
-      to_enumerator(:my_all)
+  def my_all?(arg = nil)
+    unless arg.nil?
+      if arg.is_a? Class
+        my_each.each {|element| return false unless element.is_a?(arg)}
+      elsif arg.is_a? Regexp
+        my_each.each {|element| return false unless element =~ arg}
+      else
+        my_each.each {|element| return false unless element.is_a(arg)}
+      end
+      return true
     end
+    
+    unless block_given?
+      my_each { |element| return false unless element }
+      return true
+    end
+
+    desired = false
+
+    my_each do |element|
+      desired = yield(element) 
+      break if !desired
+    end
+
+    desired 
   end
 
   def my_any?
     if block_given?
       result = []
-      (0...length).each { |element| result.push(yield(self[element])) }
+      my_each { |element| result.push(yield(self[element])) }
       p true if result.include?(true)
       p false if result.include?(false)
     else
-      to_enumerator(:my_any)
+      to_enum(:my_any)
     end
   end
 
   def my_none?
     if block_given?
       result = []
-      (0...length).each { |element| result.push(yield(self[element])) }
+      my_each { |element| result.push(yield(self[element])) }
       p false if result.include?(true)
       p true if result.include?(false)
     else
-      to_enumerator(:my_any)
+      to_enum(:my_any)
     end
   end
 
   def my_count
     if block_given?
       count = 0
-      (0...length).each { |element| count += 1 if yield(element) }
+      my_each { |element| count += 1 if yield(element) }
       p count
     else
-      to_enumerator(:count)
+      to_enum(:count)
     end
   end
 
@@ -77,7 +94,7 @@ module Enumerable
       length.times { |_element| animal.push(yield) }
       p animal
     else
-      to_enumerator(:my_map)
+      to_enum(:my_map)
     end
   end
 
