@@ -1,5 +1,7 @@
 # rubocop:disable Metrics/CyclomaticComplexity
 # rubocop:disable Metrics/PerceivedComplexity
+# rubocop:disable Metrics/Metrics/ModuleLength
+
 
 module Enumerable
   def my_each
@@ -96,7 +98,7 @@ module Enumerable
       to_a.my_each { |i| count += 1 if i }
     end
     count
-  end 
+  end
 
   def my_map(proc = nil)
     return to_enum(:my_map) unless block_given?
@@ -148,3 +150,4 @@ end
 
 # rubocop:enable Metrics/CyclomaticComplexity
 # rubocop:enable Metrics/PerceivedComplexity
+# rubocop:enable Metrics/Metrics/ModuleLength
