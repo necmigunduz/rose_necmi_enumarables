@@ -1,6 +1,7 @@
 # rubocop:disable Metrics/CyclomaticComplexity
 # rubocop:disable Metrics/PerceivedComplexity
 # rubocop:disable Metrics/ModuleLength
+# rubocop:disable Metrics/MethodLength
 
 module Enumerable
   def my_each
@@ -109,7 +110,7 @@ module Enumerable
   end
 
   def my_inject(number = nil, symbol = nil)
-        
+
     if block_given?
       accum = number
       my_each do |item|
@@ -129,7 +130,7 @@ module Enumerable
       end
       accum
     else
-      LocalJumpError.new "no block given"
+      LocalJumpError.new 'no block given'
     end
   end
   
@@ -153,3 +154,4 @@ end
 # rubocop:enable Metrics/CyclomaticComplexity
 # rubocop:enable Metrics/PerceivedComplexity
 # rubocop:enable Metrics/ModuleLength
+# rubocop:enable Metrics/MethodLength
