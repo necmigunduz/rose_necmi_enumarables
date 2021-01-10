@@ -30,17 +30,23 @@ module Enumerable
     end
   end
 
-  def my_all?(argm = nil)
-    unless argm.nil?
-      if argm.is_a? Class
-        my_each.each { |element| return false unless element.is_a?(argm) }
-      elsif argm.is_a? Regexp
-        my_each.each { |element| return false unless element =~ argm }
-      else
-        my_each.each { |element| return false unless element.is_a(Symbol) }
-      end
+  def my_all?(arg = nil)
+    if block_given?
+      to_a.my_each { |i| return false if yield(i) == false }
+
       return true
+    elsif arg.nil?
+      to_a.my_each { |i| return false if i.nil? || i == false }
+
+    elsif !arg.nil? && (arg.is_a? Class)
+      to_a.my_each { |i| return false unless [i.class, i.class.superclass].include?(arg) }
+    elsif !arg.nil? && (arg.is_a? Regexp)
+      to_a.my_each { |i| return false unless i.match(arg) }
+    else
+      to_a.my_each { |i| return false if i != arg }
     end
+    true
+  end
 
     unless block_given?
       my_each { |element| return false unless element }
@@ -77,16 +83,14 @@ module Enumerable
     !my_any?(argm, &proc)
   end
 
-  def my_count(argm = nil)
+  def my_count(arg = nil)
     count = 0
-    my_each do |element|
-      if block_given?
-        count += 1 if yield(element)
-      elsif !argm.nil?
-        count += 1 if element == argm
-      else
-        count = length
-      end
+    if block_given?
+      to_a.my_each { |i| count += 1 if yield i }
+    elsif !arg.nil?
+      to_a.my_each { |i| count += 1 if i == arg }
+    else
+      to_a.my_each { |i| count += 1 if i }
     end
     count
   end
@@ -102,7 +106,8 @@ module Enumerable
 
   def my_inject(memory = nil, symbol = nil, &proc)
     memory = memory.to_sym if memory.is_a?(String) && !symbol && !proc
-
+    raise LocalJumpError if !block_given? && number.nil? && symbol.nil?
+    
     if memory.is_a?(Symbol) && !symbol
       proc = memory.to_proc
       memory = nil
@@ -114,7 +119,7 @@ module Enumerable
     my_each { |element| memory = memory.nil? ? element : proc.yield(memory, element) }
     memory
   end
-
+  
   def my_map_proc
     arr = []
     if block_given?
