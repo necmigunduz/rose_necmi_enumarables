@@ -21,7 +21,6 @@ module Enumerable
   def my_select
     if block_given?
       arr = []
-
       my_each { |element| arr.push(element) if yield(element) }
       arr
     else
@@ -31,53 +30,73 @@ module Enumerable
 
   def my_all?(argm = nil)
     if block_given?
-      to_a.my_each { |i| false if yield(i) == false }
-
+      my_each { |element| return false if yield(element) == false }
       return true
     elsif argm.nil?
-      to_a.my_each { |i| false if i.nil? || i == false }
-
+      my_each { |n| return false if n.nil? || n == false }
     elsif !argm.nil? && (argm.is_a? Class)
-      to_a.my_each { |i| false unless [i.class, i.class.superclass].include?(arg) }
-    elsif !argm.nil? && (argm.is_a? Regexp)
-      to_a.my_each { |i| false unless i.match(argm) }
+      my_each { |n| return false if n.class != argm }
+    elsif !argm.nil? && argm.class == Regexp
+      my_each { |n| return false unless argm.match(n) }
     else
-      to_a.my_each { |i| false if i != argm }
+      my_each { |n| return false if n != argm }
     end
     true
   end
 
-  def my_any?(argm = nil)
-    return true if !block_given? && argm.nil? && my_each { |elem| return true if elem == true } && empty? == false
-    return false unless block_given? || !argm.nil?
-
+  def my_any?(arg = nil)
     if block_given?
-      my_each { |element| return true if yield(element) }
-    elsif argm.class == Regexp
-      my_each { |element| return true unless argm.match(element).nil? }
-    elsif argm.class <= Numeric || argm.class <= String
-      my_each { |element| return true if element == argm }
+      my_each { |item| return true if yield(item) }
+      false
+    elsif arg.nil?
+      my_each { |n| return true if n }
+    elsif !arg.nil? && (arg.is_a? Class)
+      my_each { |n| return true if n.class == arg }
+    elsif !arg.nil? && arg.class == Regexp
+      my_each { |n| return true if arg.match(n) }
     else
-      my_each { |element| return true if element.class != argm }
+      my_each { |n| return true if n == arg }
     end
     false
   end
 
-  def my_none?(argm = nil, &proc)
-    !my_any?(argm, &proc)
+  def my_none?(arg = nil)
+    if !block_given? && arg.nil?
+      my_each { |n| return false if n }
+      return true
+    end
+
+    if !block_given? && !arg.nil?
+
+      if arg.is_a?(Class)
+        my_each { |n| return false if n.class == arg }
+        return true
+      end
+
+      if arg.class == Regexp
+        my_each { |n| return false if arg.match(n) }
+        return true
+      end
+
+      my_each { |n| return false if n == arg }
+      return true
+    end
+
+    my_any? { |item| return false if yield(item) }
+    true
   end
 
   def my_count(arg = nil)
     count = 0
     if block_given?
-      to_a.my_each { |i| count += 1 if yield i }
+      to_a.my_each { |i| count += 1 if yield(i) }
     elsif !arg.nil?
       to_a.my_each { |i| count += 1 if i == arg }
     else
       to_a.my_each { |i| count += 1 if i }
     end
     count
-  end
+  end 
 
   def my_map(proc = nil)
     return to_enum(:my_map) unless block_given?
@@ -88,20 +107,26 @@ module Enumerable
     result
   end
 
-  def my_inject(memory = nil, symbol = nil, &proc)
-    memory = memory.to_sym if memory.is_a?(String) && !symbol && !proc
-    raise LocalJumpError if !block_given? && number.nil? && symbol.nil?
-
-    if memory.is_a?(Symbol) && !symbol
-      proc = memory.to_proc
-      memory = nil
+  def my_inject(number = nil, symbol = nil)
+    if block_given?
+      accum = number
+      my_each do |item|
+        accum = accum.nil? ? item : yield(accum, item)
+      end
+      accum
+    elsif !number.nil? && (number.is_a?(Symbol) || number.is_a?(String))
+      accum = nil
+      my_each do |item|
+        accum = accum.nil? ? item : accum.send(number, item)
+      end
+      accum
+    elsif !symbol.nil? && (symbol.is_a?(Symbol) || symbol.is_a?(String))
+      accum = number
+      my_each do |item|
+        accum = accum.nil? ? item : accum.send(symbol, item)
+      end
+      accum
     end
-
-    symbol = sym.to_sym if symbol.is_a?(String)
-    proc = symbol.to_proc if symbol.is_a?(Symbol)
-
-    my_each { |element| memory = memory.nil? ? element : proc.yield(memory, element) }
-    memory
   end
 
   def my_map_proc
