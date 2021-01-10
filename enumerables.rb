@@ -36,8 +36,7 @@ module Enumerable
     elsif argm.nil?
       my_each { |n| return false if n.nil? || n == false }
     elsif !argm.nil? && (argm.is_a? Class)
-      my_each { |n| return false if n.class != argm }
-      true
+      my_each { |n| return false if n.is_a?(argm) == false }
     elsif !argm.nil? && argm.class == Regexp
       my_each { |n| return false unless argm.match(n) }
     else
@@ -53,8 +52,7 @@ module Enumerable
     elsif arg.nil?
       my_each { |n| return true if n }
     elsif !arg.nil? && (arg.is_a? Class)
-      my_each { |n| return true if n.class == arg }
-      false
+      my_each { |n| return true if n.is_a?(arg) == true }
     elsif !arg.nil? && arg.class == Regexp
       my_each { |n| return true if arg.match(n) }
     else
@@ -111,7 +109,7 @@ module Enumerable
   end
 
   def my_inject(number = nil, symbol = nil)
-    return LocalJumpError.new "no block given" unless block_given?
+        
     if block_given?
       accum = number
       my_each do |item|
@@ -130,10 +128,11 @@ module Enumerable
         accum = accum.nil? ? item : accum.send(symbol, item)
       end
       accum
+    else
+      LocalJumpError.new "no block given"
     end
   end
-p [].my_inject
-
+  
   def my_map_proc
     arr = []
     if block_given?
