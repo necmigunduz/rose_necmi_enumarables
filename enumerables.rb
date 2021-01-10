@@ -26,37 +26,22 @@ module Enumerable
     end
   end
 
-  def my_all?(arg = nil)
+  def my_all?(argm = nil)
     if block_given?
-      to_a.my_each { |i| return false if yield(i) == false }
+      to_a.my_each { |i| false if yield(i) == false }
 
       return true
-    elsif arg.nil?
-      to_a.my_each { |i| return false if i.nil? || i == false }
+    elsif argm.nil?
+      to_a.my_each { |i| false if i.nil? || i == false }
 
-    elsif !arg.nil? && (arg.is_a? Class)
-      to_a.my_each { |i| return false unless [i.class, i.class.superclass].include?(arg) }
-    elsif !arg.nil? && (arg.is_a? Regexp)
-      to_a.my_each { |i| return false unless i.match(arg) }
+    elsif !argm.nil? && (argm.is_a? Class)
+      to_a.my_each { |i| false unless [i.class, i.class.superclass].include?(arg) }
+    elsif !argm.nil? && (argm.is_a? Regexp)
+      to_a.my_each { |i| false unless i.match(argm) }
     else
-      to_a.my_each { |i| return false if i != arg }
+      to_a.my_each { |i| false if i != argm }
     end
     true
-  end
-
-    unless block_given?
-      my_each { |element| return false unless element }
-      return true
-    end
-
-    desired = false
-
-    my_each do |element|
-      desired = yield(element)
-      break unless desired
-    end
-
-    desired
   end
 
   def my_any?(argm = nil)
