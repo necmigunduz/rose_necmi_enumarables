@@ -91,7 +91,7 @@ module Enumerable
   def my_inject(memory = nil, symbol = nil, &proc)
     memory = memory.to_sym if memory.is_a?(String) && !symbol && !proc
     raise LocalJumpError if !block_given? && number.nil? && symbol.nil?
-    
+
     if memory.is_a?(Symbol) && !symbol
       proc = memory.to_proc
       memory = nil
@@ -103,7 +103,7 @@ module Enumerable
     my_each { |element| memory = memory.nil? ? element : proc.yield(memory, element) }
     memory
   end
-  
+
   def my_map_proc
     arr = []
     if block_given?
