@@ -110,7 +110,6 @@ module Enumerable
   end
 
   def my_inject(number = nil, symbol = nil)
-
     if block_given?
       accum = number
       my_each do |item|
@@ -133,7 +132,7 @@ module Enumerable
       LocalJumpError.new 'no block given'
     end
   end
-  
+
   def my_map_proc
     arr = []
     if block_given?
