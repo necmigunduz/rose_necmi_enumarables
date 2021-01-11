@@ -109,7 +109,7 @@ module Enumerable
   end
 
   def my_inject(number = nil, symbol = nil)
-    raise LocalJumpError.new 'No parameters' unless block_given?
+    raise LocalJumpError, 'No parameters', caller unless block_given?
 
     if block_given?
       accum = number
