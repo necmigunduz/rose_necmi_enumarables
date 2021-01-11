@@ -1,7 +1,6 @@
 # rubocop:disable Metrics/CyclomaticComplexity
 # rubocop:disable Metrics/PerceivedComplexity
 # rubocop:disable Metrics/ModuleLength
-# rubocop:disable Metrics/MethodLength
 
 module Enumerable
   def my_each
@@ -110,7 +109,7 @@ module Enumerable
   end
 
   def my_inject(number = nil, symbol = nil)
-    raise LocalJumpError.new 'No parameters' unless block_given?
+    raise LocalJumpError.new ('No parameters') unless block_given?
 
     if block_given?
       accum = number
@@ -132,7 +131,7 @@ module Enumerable
       accum
     end
   end
-
+ 
   def my_map_proc
     arr = []
     if block_given?
@@ -153,4 +152,3 @@ end
 # rubocop:enable Metrics/CyclomaticComplexity
 # rubocop:enable Metrics/PerceivedComplexity
 # rubocop:enable Metrics/ModuleLength
-# rubocop:enable Metrics/MethodLength
