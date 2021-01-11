@@ -110,6 +110,8 @@ module Enumerable
   end
 
   def my_inject(number = nil, symbol = nil)
+    raise LocalJumpError.new 'No parameters' unless block_given?
+
     if block_given?
       accum = number
       my_each do |item|
@@ -128,8 +130,6 @@ module Enumerable
         accum = accum.nil? ? item : accum.send(symbol, item)
       end
       accum
-    else
-      LocalJumpError.new 'no block given'
     end
   end
 
