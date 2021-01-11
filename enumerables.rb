@@ -109,7 +109,7 @@ module Enumerable
   end
 
   def my_inject(number = nil, symbol = nil)
-    raise LocalJumpError.new ('No parameters') unless block_given?
+    raise LocalJumpError.new 'No parameters' unless block_given?
 
     if block_given?
       accum = number
@@ -131,7 +131,7 @@ module Enumerable
       accum
     end
   end
- 
+
   def my_map_proc
     arr = []
     if block_given?
