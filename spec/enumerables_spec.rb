@@ -1,4 +1,4 @@
-require './enumerables.rb'
+require_relative '../enumerables.rb'
 
 describe Enumerable do
     let(:arr) { %w[a b c] }
@@ -26,6 +26,30 @@ describe Enumerable do
         context 'when given no block' do
             it 'should return an enumerator' do
               expect(arr.my_each).to be_an(Enumerator)
+            end
+          end
+    end
+
+    describe '#my_each_with_index' do
+        it 'returns the same array' do
+            expect(arr.my_each_with_index { |a| a }).to eq(%w[a b c])
+        end
+
+        it 'should return the same range' do
+            expect(range.my_each_with_index { |a| a }).to eql(1...10)
+        end
+
+        it 'should return the same hash' do
+            expect(hash.my_each_with_index { |a| a }).to eql({ a: '1', b: 'a', c: 3 })
+        end
+
+        it 'should return the same array' do
+            expect(arr_2.my_each_with_index { |a| a }).to eql([5,1,2,5])
+        end
+
+        context 'when given no block' do
+            it 'should return an enumerator' do
+              expect(arr.my_each_with_index).to be_an(Enumerator)
             end
           end
     end
